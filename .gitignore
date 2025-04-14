@@ -15,4 +15,4 @@ db.sqlite3
 .vscode/  
 
 */migrations/*.py
-*/migrations/*.pyc
+*/migrations/*.pyc  
