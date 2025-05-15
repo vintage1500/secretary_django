@@ -12,6 +12,21 @@ class Question(models.Model):
         verbose_name='Тип пользователя'
     )
     question_text = models.TextField(verbose_name='Текст вопроса')
+    username = models.CharField(
+        max_length=100,
+        verbose_name='Telegram username',
+        blank=True,
+        null=True
+    )
+    is_processed = models.BooleanField(
+        default=False,
+        verbose_name='Обработан ли вопрос'
+    )
+    admin_comment = models.TextField(
+        verbose_name='Комментарий администратора',
+        blank=True,
+        null=True
+    )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     
     class Meta:

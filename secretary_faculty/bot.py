@@ -38,7 +38,10 @@ def send_welcome(message):
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
     if call.data in ['applicant', 'student']:
-        user_states[call.from_user.id] = {'user_type': call.data}
+        user_states[call.from_user.id] = {
+            'user_type': call.data,
+            'username': call.from_user.username
+        }
         bot.send_message(
             call.from_user.id,
             "Спасибо! Теперь напишите ваш вопрос:"
@@ -50,6 +53,7 @@ def save_question(message):
         chat_id = message.chat.id
         if chat_id in user_states:
             user_type = user_states[chat_id]['user_type']
+            username = user_states[chat_id].get('username', None)
             question_text = message.text
             
             if not question_text.strip():
@@ -59,13 +63,21 @@ def save_question(message):
             
             Question.objects.create(
                 user_type=user_type,
-                question_text=question_text
+                question_text=question_text,
+                username=username
             )
             
-            bot.send_message(
-                chat_id,
-                "Спасибо за ваш вопрос! Мы рассмотрим его в ближайшее время."
-            )
+            response_text = """
+Спасибо за ваш вопрос! Мы рассмотрим его в ближайшее время.
+
+Если у вас возникнут дополнительные вопросы, вы можете:
+1. Обратиться через этого бота
+2. Написать в личные сообщения
+3. Поделиться контактом с администратором
+
+Спасибо за обращение!"""
+            
+            bot.send_message(chat_id, response_text)
             del user_states[chat_id]
     except Exception as e:
         print(f"Ошибка: {e}")
