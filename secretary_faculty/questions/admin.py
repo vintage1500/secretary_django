@@ -1,5 +1,11 @@
 from django.contrib import admin
-from .models import Question
+from .models import Question, User, QuestionCategory, QuestionSubcategory, StaticQuestion, DynamicQuestion
+
+admin.site.register(User)
+admin.site.register(QuestionCategory)
+admin.site.register(QuestionSubcategory)
+admin.site.register(StaticQuestion)
+admin.site.register(DynamicQuestion)
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
